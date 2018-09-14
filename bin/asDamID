@@ -1,0 +1,133 @@
+#!/bin/bash
+
+## allele-specific DamID sequencing pipeline
+## Copyright (c) 2018 Institut Curie
+## Author(s): Dina Zielinski
+## Contact: dina.zielinski@curie.fr
+## This software is distributed without any guarantee under the terms of the GNU General
+## Public License, either Version 2, June 1991 or Version 3, June 2007.
+
+SOFT="asDamID"
+VERSION="0.1.0"
+
+function usage {
+	echo -e "usage: $SOFT -f FORWARD -o OUTPUT -c CONFIG [-r REVERSE] [-s $SAMPLE_ID]"
+	echo -e "-h/--help for more information"
+}
+
+function help {
+	usage;
+	echo
+	echo "$SOFT $VERSION"
+	echo "OPTIONS:"
+    echo "   -f|--forward INPUT: forward fastq file"
+    echo "   -o|--output OUTPUT: output folder"
+    echo "   -c|--conf CONFIG: configuration file for RNA processing"
+    echo "   [-r|--reverse INPUT]: reverse fastq file"
+    echo "   [-s|--sample ID]: sample ID"
+    echo "   [-h|--help]: help"
+    echo "   [-v|--version]: version"
+    exit;
+}
+
+function version {
+	echo -e "$SOFT version $VERSION"
+	exit
+}
+
+function opts_error {
+	echo -e "ERRORL: invalid parameters" >&2
+	ehco -e "$SOFT -h for help"
+	exit
+}
+
+if [[ $# -lt 1 ]]; then
+	usage
+	exit
+fi
+
+for arg in "$@"; do
+  shift
+  case "$arg" in
+      "--reverse") set -- "$@" "-r" ;;
+      "--forward") set -- "$@" "-f" ;;
+      "--output") set -- "$@" "-o" ;;
+      "--conf")   set -- "$@" "-c" ;;
+      "--sample")   set -- "$@" "-s" ;;
+      "--help")   set -- "$@" "-h" ;;
+      "--version")   set -- "$@" "-v" ;;
+      *)        set -- "$@" "$arg"
+  esac
+done
+
+while getopts "f:r:o:c:s:hv" OPT; do
+    case $OPT in
+    f) FORWARD=$OPTARG;;
+	r) REVERSE=$OPTARG;;
+	o) ODIR=$OPTARG;;
+	c) CONF=$OPTARG;;
+	s) SAMPLE_ID=$OPTARG;;
+	v) version ;;
+	h) help ;;
+	\?)
+	    echo "Invalid option: -$OPTARG" >&2
+	    usage
+	     exit 1
+	     ;;
+	:)
+	    echo "Option -$OPTARG requires an argument." >&2
+	    usage
+	    exit 1
+	    ;;
+    esac
+done
+
+if [[ -z $FORWARD || -z $ODIR || -z $CONF ]]; then
+	usage
+	exit
+fi
+
+## Set PATHS
+BIN_PATH=`dirname $0`
+ABS_BIN_PATH=`cd "$BIN_PATH"; pwd`
+SCRIPTS_PATH="$ABS_BIN_PATH/../scripts/"
+
+## Load functions files
+. $SCRIPTS_PATH/utils.inc.sh
+. $SCRIPTS_PATH/damid.inc.sh
+
+## check CONFIG file
+if [ ! -z "$CONF" ]; then
+    CONF=`abspath $CONF`
+    if [ -e "$CONF" ]; then
+        read_config $CONF
+    else
+        echo "Config file '$CONF' not found"
+        exit 1
+    fi
+fi
+
+echo -n "Checking index and annotation files..."
+if [ ! -z ${TRANSCRIPTS_GTF} ]; then file_exists ${TRANSCRIPTS_GTF}; fi
+if [ ! -z ${GENE_BED} ]; then file_exists ${GENE_BED}; fi
+echo -e "OK"
+echo
+
+## map to N-masked genome
+if [[ -e ${FQ_READS_R} ]]
+    then
+        ${MAPPING_NMASKED_B2} -f $FASTQ_F -r $FASTQ_R -o $ODIR -n $NAME -c $CONFIG
+	else
+         ${MAPPING_NMASKED_B2} -f $FASTQ_F -o $ODIR -n $NAME -c $CONFIG
+fi
+
+## assign reads with SNPsplit
+if [[ ! -e ${FASTQ_R} ]]
+then
+    ${SNPSPLIT} --samtools_path ${SAMTOOLS} --snp_file ${SNP_FILE} ${ODIR}/${NAME}.bam
+else
+    ${SNPSPLIT} --paired --samtools_path ${SAMTOOLS} --snp_file ${SNP_FILE} ${ODIR}/${NAME}.bam
+fi
+
+
+
