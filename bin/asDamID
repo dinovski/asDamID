@@ -129,5 +129,7 @@ else
     ${SNPSPLIT} --paired --samtools_path ${SAMTOOLS} --snp_file ${SNP_FILE} ${ODIR}/${NAME}.bam
 fi
 
+## bam to bigWig
 
+## bin, count, normalize
 
