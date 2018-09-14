@@ -119,10 +119,3 @@ done
 cmd="${R}/R --no-save --no-restore -e \"scripts='${SCRIPTS_PATH}'; inPath='${IDIR}'; outPath='${ODIR}'; min_reads=10; source('${SCRIPTS_PATH}/hmmt.R', chdir=TRUE))\""
 exec_cmd ${cmd} > $logdir/report.log 2>&1
 
-
-
-
-
-
-
-
