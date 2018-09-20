@@ -8,10 +8,10 @@ allele-specific DamID sequencing pipeline
 3. Assign allele-specific reads using SNPsplit and split into parental allele specific BAM files
 Common alleles are those for which the maternal and paternal reads have the same number of mismatches and same position. If scores are the same but position is different between the reads, these ambiguous reads (UA) are output to a separate bam.  
 
-  -XX:Z:UA alignment is not assigned to any parental genome  
-  -XX:Z:G1 alignment is assigned to the first parental genome  
-  -XX:Z:G2 alignment is assigned to the second parental genome  
-  -XX:Z:CF alignment is ambiguous/conflictual
+    XX:Z:UA alignment is not assigned to any parental genome  
+    XX:Z:G1 alignment is assigned to the first parental genome  
+    XX:Z:G2 alignment is assigned to the second parental genome  
+    XX:Z:CF alignment is ambiguous/conflictual
 
 4. Generate bigWig files for log2 ratios and RPKM normalized counts
 
