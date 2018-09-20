@@ -107,9 +107,9 @@ if [ ! -z "$CONF" ]; then
     fi
 fi
 
-echo -n "Checking index and annotation files..."
+## check ref/annotation files
 if [ ! -z ${FASTA} ]; then file_exists ${FASTA}; fi
-if [ ! -z ${GENE_BED} ]; then file_exists ${GENE_BED}; fi
+if [ ! -z ${CHR_LEN} ]; then file_exists ${CHR_LEN}; fi
 echo -e "OK"
 echo
 
