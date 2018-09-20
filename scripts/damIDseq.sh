@@ -3,7 +3,7 @@
 ## post alignment processing
 
 ## 01 prepare gatc fragment and binned genome bed/saf files
-grep -v "chrUn" | grep -v "random" | grep -v "chrM" ${LEN} > ${IDIR}/chrom.sizes.filt
+grep -v "chrUn" | grep -v "random" | grep -v "chrM" ${CHR_LEN} > ${IDIR}/chrom.sizes.filt
 LEN=${IDIR}/chrom.sizes.filt
 
 ## get genome-wide GATC coordinates and fragments
