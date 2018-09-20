@@ -15,11 +15,11 @@ Common alleles are those for which the maternal and paternal reads have the same
 
 4. Generate bigWig files for log2 ratios and RPKM normalized counts
 
-5. Divide reference genome coordinates into desired bin size (eg. 10kb) using BEDTools windowMaker 
+5. Divide reference genome coordinates into desired bin size (eg. 10kb)
 
 6. Extract 'GATC' coordinates from the reference FASTA
 
-7. Reads mapping within 2 GATC sites are counted using featureCounts --largestOverlap and collapsed into the bin with the largest overlap (intersecBed -f 0.51 with binned genome)
+7. Count reads mapping within 2 GATC sites and collapse into the genomic bin with the largest overlap
 
 8. Normalize bins with > 10 counts to 1 million reads and calculated the log2 ratio of the fusion over dam counts using a pseudcount of 1. Compute the average ratio for replicates
 
