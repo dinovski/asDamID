@@ -12,7 +12,7 @@ IDIR=
 ODIR=
 SCRIPTS_PATH=
 
-LEN=mm10.chrom.sizes
+CHR_LEN=mm10.chrom.sizes
 FASTA=mm10.fa
 BLACKLIST=mm10.blacklist.chrM.bed
 BIN_SIZE=10000
