@@ -2,25 +2,6 @@
 
 ## post alignment processing
 
-## bin paths
-SAMTOOLS=
-BEDTOOLS=
-PYTHON=
-FEATURECOUNTS=
-UCSC_TOOLS=
-PYTHON=
-DATAMASH=
-R=
-
-IDIR=
-ODIR=
-SCRIPTS_PATH=
-
-LEN=mm10.chrom.sizes
-FASTA=mm10.fa
-BLACKLIST=mm10.blacklist.chrM.bed
-BIN_SIZE=10000
-
 ## 01 prepare gatc fragment and binned genome bed/saf files
 grep -v "chrUn" | grep -v "random" | grep -v "chrM" ${LEN} > ${IDIR}/chrom.sizes.filt
 LEN=${IDIR}/chrom.sizes.filt
