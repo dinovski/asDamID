@@ -108,7 +108,7 @@ if [ ! -z "$CONF" ]; then
 fi
 
 echo -n "Checking index and annotation files..."
-if [ ! -z ${TRANSCRIPTS_GTF} ]; then file_exists ${TRANSCRIPTS_GTF}; fi
+if [ ! -z ${FASTA} ]; then file_exists ${FASTA}; fi
 if [ ! -z ${GENE_BED} ]; then file_exists ${GENE_BED}; fi
 echo -e "OK"
 echo
@@ -131,5 +131,6 @@ fi
 
 ## bam to bigWig
 
-## bin, count, normalize
 
+## bin, count, normalize
+${BIN_REF} -g ${CHR_LEN} -w ${BIN_SIZE} ${ODIR}/${GENOME}_bins.saf
