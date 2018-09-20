@@ -3,9 +3,9 @@ allele-specific DamID sequencing pipeline
 
 1. Trim raw reads using cutadapt
 
-2. Align trimmed reads with bowtie2 (default end-to-end, as required by SNPsplit) to mm10 N-masked at high quality homozygous SNPs differing between parental strains (eg. CAST/129)
+2. Align trimmed reads with bowtie2 (default end-to-end, as required by SNPsplit) to a refrence genome N-masked at high quality homozygous SNPs differing between parental strains (eg. CAST/129)
 
-3. Assign allele-specific reads using SNPsplit and split into parental allele specific BAM files
+3. Assign allele-specific reads and split into parental allele specific BAM files
 Common alleles are those for which the maternal and paternal reads have the same number of mismatches and same position. If scores are the same but position is different between the reads, these ambiguous reads (UA) are output to a separate bam.  
 
     XX:Z:UA alignment is not assigned to any parental genome  
