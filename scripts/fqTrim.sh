@@ -1,12 +1,12 @@
 #!/bin/bash
 
-CUTADAPT=/bioinfo/local/build/Centos/python/python-2.7.12/bin/cutadapt
-FASTX_REVCOM=/bioinfo/local/build/fastx_toolkit_0.0.13/fastx_reverse_complement
-TRIMG=/bioinfo/local/build/Centos/trim_galore/trim_galore_v0.4.4
+CUTADAPT=/usr/local/bin/python/python-2.7.12/bin/cutadapt
+FASTX_REVCOM=/usr/local/bin/fastx_toolkit_0.0.13/fastx_reverse_complement
+TRIMG=/usr/local/bin/Centos/trim_galore/trim_galore_v0.4.4
 
-IDIR=/data/kdi_prod/.kdi/project_workspace_0/1242/acl/01.00/svn/analyse/script/damID
-ODIR=/data/tmp/dina/damid/trimmed
-FILE=/data/kdi_prod/.kdi/project_workspace_0/1242/acl/01.00/svn/analyse/script/damID/FASTQS_NEW
+IDIR=/in/path
+ODIR=/path/to/trimmed
+FILE=$IDIR/FASTQS_NEW
 FASTQ=$(grep "^$PBS_ARRAYID," $FILE | cut -d',' -f2)
 
 mkdir -p ${ODIR}
@@ -36,22 +36,18 @@ case $InPutBaseName in
   exit 1 ;;
 esac
 
-#####
 ## Adaptor sequences used in DamID-seq
-#####
 ADPTR_SHORT_5="GGTCGCGGCCGAG"
 ADPTR_LONG_5="CTAATACGACTCACTATAGGGCAGCGTGGTCGCGGCCGAG"
 
 # reverse complement of adapter sequences
-#  (${FASTX_REVCOM} expects fasta input, "awk 'NR > 1'"
+# (${FASTX_REVCOM} expects fasta input, "awk 'NR > 1'"
 ADPTR_SHORT_3=`echo -e ">\n${ADPTR_SHORT_5}" | ${FASTX_REVCOM} | awk 'NR > 1'`
 ADPTR_LONG_3=`echo -e ">\n${ADPTR_LONG_5}" | ${FASTX_REVCOM} | awk 'NR > 1'`
 
 CLIP_STATS=${OutFileName}_local.clip_stats
 
-###############################################################################
 ## trim adapter sequences from reads, split fastq in inner and edge reads
-###############################################################################
 ## clip long adapter, save non-adapter reads, and adapter-match stats
 ADPTR_LONG_LEN=`echo "${ADPTR_LONG_5}" | wc -c`
 ADPTR_LONG_LEN=`expr ${ADPTR_LONG_LEN} - 1`
