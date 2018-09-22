@@ -1,7 +1,7 @@
 # asDamID
 allele-specific DamID sequencing pipeline
 
-1. Trim raw reads using cutadapt
+1. Trim raw reads for long/short damID adapters
 
 2. Align trimmed reads with bowtie2 (default end-to-end, as required by SNPsplit) to a refrence genome N-masked at high quality homozygous SNPs differing between parental strains (eg. CAST/129)
 
