@@ -21,7 +21,7 @@ awk -v OFS='\t' '{print $2,$3,$4,$1}' ${ODIR}/mm10_bins.saf > ${ODIR}/mm10_bins.
 ## 02 generate binned counts and merge fusion/dam results
 ## count methods:
 ## gatc: only count reads mapping fully within a gatc fragment then collapse into bins
-## bins: assign reads to bins with the largest overlap; still problem of gatc sites being in separate bins; need to look into this
+## bins: assign reads to bins with the largest overlap; still problem of gatc sites being assigned to separate bins
 COUNT_METHOD=gatc
 
 GATC_SAF=${ODIR}/gatc_fragments.saf
