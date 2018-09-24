@@ -2,10 +2,6 @@
 
 ## allele-specific DamID sequencing pipeline
 ## Copyright (c) 2018 Institut Curie
-## Author(s): Dina Zielinski
-## Contact: dina.zielinski@curie.fr
-## This software is distributed without any guarantee under the terms of the GNU General
-## Public License, either Version 2, June 1991 or Version 3, June 2007.
 
 SOFT="asDamID"
 VERSION="0.1.0"
