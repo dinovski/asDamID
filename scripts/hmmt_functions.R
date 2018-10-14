@@ -3,12 +3,12 @@ suppressPackageStartupMessages(library(GenomicRanges))
 
 ## HMM functions
 HMM <- function(normalized, na_solution) {
-  # Run a basic HMM for each data column of a damid data frame.
+  ## Run a basic HMM
   if (!na_solution %in% c("NA", "keep", "-")) {
     stop("Unknown na_solution")
   }
   
-  # Add index to convert to the original order
+  ## Add index to convert to original order
   normalized.tmp <- normalized
   normalized.tmp$idx <- 1:nrow(normalized)
   
@@ -17,7 +17,7 @@ HMM <- function(normalized, na_solution) {
   ## HMM
   br <- bridge(normalized.tmp[, 1:4])
   
-  ## Flush undesired output to the sink
+  ## Flush undesired output
   sink(file="/dev/null")
   fit <- BaumWelchT(x=br$x, series.length=br$series.length)
   sink()
@@ -28,14 +28,14 @@ HMM <- function(normalized, na_solution) {
   
   df.hmm <- cbind(normalized.tmp[, c(1:3, 5)], model)
   
-  # assume bins with NA cannot be called LAD
+  ## assume bins with NA cannot be called LAD
   if (na_solution == "NA") {
     df.hmm$model[is.na(normalized.tmp$score)] <- NA
   } else if (na_solution == "-") {
     df.hmm$model[is.na(normalized.tmp$score)] <- "-"
   }
   
-  # Convert into the original order
+  ## Convert to original order
   df.hmm <- df.hmm[order(df.hmm$idx), ]
   
   df.hmm[, c(1:3, 5)]
