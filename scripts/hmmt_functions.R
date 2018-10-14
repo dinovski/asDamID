@@ -14,14 +14,16 @@ HMM <- function(normalized, na_solution) {
   
   normalized.tmp <- normalized.tmp[order(normalized.tmp$chr, normalized.tmp$start), ]
   
-  ## HMM
+  ## HMM: Pr of observed sequence given observations/emissions
   br <- bridge(normalized.tmp[, 1:4])
   
   ## Flush undesired output
   sink(file="/dev/null")
+  ## EM: estimate states, update params
   fit <- BaumWelchT(x=br$x, series.length=br$series.length)
   sink()
   
+  ## infer most likely hidden state
   boundstate <- which.max(fit$mu)
   model <- 0 + (fit$ViterbiPath[br$nonvirtuals] == boundstate)
   model <- ifelse(model == 1, "AD", "iAD")
