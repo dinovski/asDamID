@@ -3,7 +3,7 @@ allele-specific DamID sequencing pipeline
 
 1. Trim raw reads for long/short damID adapters
 
-2. Align trimmed reads with bowtie2 (default end-to-end, as required by SNPsplit) to a refrence genome N-masked at high quality homozygous SNPs differing between parental strains (eg. CAST/129)
+2. Align trimmed reads with bowtie2 (default end-to-end, as required by SNPsplit) to a reference genome N-masked at high quality homozygous SNPs differing between parental strains (eg. CAST/129)
 
 3. Assign allele-specific reads > spearate files for G1 specific, G2 specific, unassigned alignments, and conflictual.  
 (Common alleles are those for which the maternal and paternal reads have the same number of mismatches and same position. If scores are the same but position is different between the reads, these ambiguous reads (UA) are output to a separate bam)  
@@ -13,7 +13,7 @@ allele-specific DamID sequencing pipeline
     XX:Z:G2 alignment is assigned to the second parental genome  
     XX:Z:CF alignment is ambiguous/conflictual
 
-4. Allele-specific alignment summary statistics.
+4. Filter reads that do not begin with the 'GATC' motif and MAPQ<10 > allele-specific alignment summary statistics
 
 5. Generate bigWig files for log2 ratios and RPKM normalized counts
 
