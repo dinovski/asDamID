@@ -13,16 +13,18 @@ allele-specific DamID sequencing pipeline
     XX:Z:G2 alignment is assigned to the second parental genome  
     XX:Z:CF alignment is ambiguous/conflictual
 
-4. Filter reads that do not begin with the 'GATC' motif and MAPQ<10 > allele-specific alignment summary statistics
+4. Filter reads that do not begin with the 'GATC' motif and MAPQ<10
 
-5. Generate bigWig files for log2 ratios and RPKM normalized counts
+5. Output allele-specific alignment summary statistics
 
-6. Divide reference genome coordinates into desired bin size (eg. 10kb)
+6. Generate bigWig files for log2 ratios and RPKM normalized counts
 
-7. Extract 'GATC' coordinates from the reference FASTA
+7. Divide reference genome coordinates into desired bin size (eg. 10kb)
 
-8. Count reads mapping within 2 GATC sites and collapse into the genomic bin with the largest overlap
+8. Extract 'GATC' coordinates from the reference FASTA
 
-9. Normalize bins with > 10 counts to 1 million reads and calculated the log2 ratio of the fusion over dam counts using a pseudcount of 1. Compute the average ratio for replicates
+9. Count reads mapping within 2 GATC sites and collapse into the genomic bin with the largest overlap
 
-10. Define LADs by running a Hidden Markov Model (https://github.com/gui11aume/HMMt) over the normalized counts
+10. Normalize bins with > 10 counts to 1 million reads and calculate the log2 ratio of the fusion over dam counts + a pseudcount. Compute the average ratio for replicates.
+
+10. Define LADs by running a Hidden Markov Model (https://github.com/gui11aume/HMMt) over the total and allele-specific normalized counts
