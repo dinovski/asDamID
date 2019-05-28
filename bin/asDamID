@@ -106,7 +106,7 @@ fi
 ## check ref/annotation files
 if [ ! -z ${FASTA} ]; then file_exists ${FASTA}; fi
 if [ ! -z ${CHR_LEN} ]; then file_exists ${CHR_LEN}; fi
-echo -e "OK"
+echo -e "annotation files OK"
 echo
 
 ## map to N-masked genome
@@ -114,7 +114,7 @@ if [[ -e ${FQ_READS_R} ]]
     then
         ${MAPPING_NMASKED_B2} -f $FASTQ_F -r $FASTQ_R -o $ODIR -n $NAME -c $CONFIG
 	else
-         ${MAPPING_NMASKED_B2} -f $FASTQ_F -o $ODIR -n $NAME -c $CONFIG
+        ${MAPPING_NMASKED_B2} -f $FASTQ_F -o $ODIR -n $NAME -c $CONFIG
 fi
 
 ## assign reads with SNPsplit
