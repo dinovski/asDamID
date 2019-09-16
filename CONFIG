@@ -10,6 +10,7 @@ R=
 
 IDIR=
 ODIR=
+GENO_DIR=
 SCRIPTS_PATH=
 
 B2_OPT="--reorder -p 8 -D 70 -R 3 -N 0 -L 20 -i S,1,0.50"
