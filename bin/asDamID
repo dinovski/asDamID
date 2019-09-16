@@ -83,12 +83,12 @@ if [[ -z $FORWARD || -z $ODIR || -z $CONF ]]; then
 	exit
 fi
 
-## Set PATHS
+## set PATHS
 BIN_PATH=`dirname $0`
 ABS_BIN_PATH=`cd "$BIN_PATH"; pwd`
 SCRIPTS_PATH="$ABS_BIN_PATH/../scripts/"
 
-## Load functions files
+## load functions files
 . $SCRIPTS_PATH/utils.inc.sh
 . $SCRIPTS_PATH/damid.inc.sh
 
@@ -104,26 +104,41 @@ if [ ! -z "$CONF" ]; then
 fi
 
 ## check ref/annotation files
-if [ ! -z ${FASTA} ]; then file_exists ${FASTA}; fi
+if [ ! -z ${REF_FASTA} ]; then file_exists ${REF_FASTA}; fi
 if [ ! -z ${CHR_LEN} ]; then file_exists ${CHR_LEN}; fi
 echo -e "annotation files OK"
 echo
 
+## FASTQC
+if [ ${RUN_FASTQC} == 1 ]; then
+    fastqc_func "${FORWARD} ${REVERSE}" ${ODIR} ${LOGDIR}
+fi
+
+## build N-masked genome
+if [[ ! -e ${FASTA_NMASK} ]]; then
+    build_genome_func ${GENO_DIR} ${LOGDIR}
+fi
+
 ## map to N-masked genome
-if [[ -e ${FQ_READS_R} ]]
-    then
+if [[ -e ${FQ_READS_R} ]]; then
         ${MAPPING_NMASKED_B2} -f $FASTQ_F -r $FASTQ_R -o $ODIR -n $NAME -c $CONFIG
-	else
+else
         ${MAPPING_NMASKED_B2} -f $FASTQ_F -o $ODIR -n $NAME -c $CONFIG
 fi
 
-## assign reads with SNPsplit
-if [[ ! -e ${FASTQ_R} ]]
-then
+## assign reads with SNPsplit: assign_reads_func()
+if [[ ! -e ${FASTQ_R} ]]; then
     ${SNPSPLIT} --samtools_path ${SAMTOOLS} --snp_file ${SNP_FILE} ${ODIR}/${NAME}.bam
 else
     ${SNPSPLIT} --paired --samtools_path ${SAMTOOLS} --snp_file ${SNP_FILE} ${ODIR}/${NAME}.bam
 fi
+
+## mark duplicates
+mark_dup_func ${ODIR} ${LOGDIR}
+
+## keep only reads that begin with GATC (indicates specificity of Dam and Dpn enzymes): gatc_filter_func()
+${SAMTOOLS}/samtools view -h -q 10 ${ODIR}/${NAME}/mapping_N-masked_bowtie2/${NAME}_N-masked.allele_flagged.mdup.bam |\
+awk -F '\t' '($1 ~ /^@/ || $10 ~/GATC/ )' | ${SAMTOOLS}/samtools view -hbS - | ${SAMTOOLS}/samtools sort -T ${ODIR}/${NAME}/${NAME} - > ${ODIR}/${NAME}/mapping_N-masked_bowtie2/${NAME}_N-masked.allele_flagged.filt.bam
 
 ## bam to bigWig
 
