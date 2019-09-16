@@ -12,7 +12,17 @@ IDIR=
 ODIR=
 SCRIPTS_PATH=
 
-CHR_LEN=mm10.chrom.sizes
-FASTA=mm10.fa
-BLACKLIST=mm10.blacklist.chrM.bed
+B2_OPT="--reorder -p 8 -D 70 -R 3 -N 0 -L 20 -i S,1,0.50"
+
+## wget ftp://ftp-mouse.sanger.ac.uk/REL-1505-SNPs_Indels/mgp.v5.merged.snps_all.dbSNP142.vcf
+FULL_VCF=/set/path/mgp.v5.merged.snps_all.dbSNP142.vcf
+REF_FASTA=/set/path/mm10.fa
+REF_GTF=/set/path/mm10_refFlat_12122016.gtf
+
+ID_REF=CAST_EiJ
+ID_ALT=129S1_SvImJ
+
+CHR_LEN=/set/path/mm10.chrom.sizes
+BLACKLIST=/set/path/mm10.blacklist.bed
+## bin size for
 BIN_SIZE=10000
